@@ -11,10 +11,19 @@ const readData = () => {
   return parsedData;
 };
 
-//GET all
+//GET all videos in filtered form
 router.get("/", (req, res) => {
   const videos = readData();
-  res.status(200).json(videos);
+  const videosFilteredInfo = videos.map((video) => {
+    const filteredVideo = {
+      id: video.id,
+      title: video.title,
+      channel: video.channel,
+      image: video.image,
+    };
+    return filteredVideo;
+  });
+  res.status(200).json(videosFilteredInfo);
 });
 
 //GET a single video by id
@@ -38,6 +47,15 @@ router.post("/", (req, res) => {
   const newVideo = {
     id: crypto.randomUUID(),
     title: videoObj.title,
+    channel: "New Channel",
+    image: "/images/Upload-video-preview.jpg",
+    description: videoObj.description,
+    views: "0",
+    likes: "0",
+    duration: "0:00",
+    video: "https://unit-3-project-api-0a5620414506.herokuapp.com/stream",
+    timestamp: Date.now(),
+    comments: [],
   };
 
   const videoData = readData();
